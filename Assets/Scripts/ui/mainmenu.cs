@@ -97,7 +97,9 @@ public class mainmenu : MonoBehaviour
 
     public void playpressed()
     {
+        StartCoroutine(fadeOut(currentState));
         currentState = State.level;
+        StartCoroutine(fade(currentState));
     }
     public void creditspressed()
     {
@@ -125,6 +127,11 @@ public class mainmenu : MonoBehaviour
         StartCoroutine(fadeOut(currentState));
         currentState = State.menu;
         StartCoroutine(fade(currentState));
+    }
+
+    public void loadLevel(int level)
+    {
+        Debug.LogError("load level: " + level);
     }
 
     IEnumerator fade(State FadeToState)
