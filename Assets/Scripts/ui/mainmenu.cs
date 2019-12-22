@@ -103,6 +103,8 @@ public class mainmenu : MonoBehaviour
             Application.Quit();
         }
 
+
+
     }
 
     public void playpressed()
@@ -111,7 +113,9 @@ public class mainmenu : MonoBehaviour
     }
     public void creditspressed()
     {
+        StartCoroutine(fadeOut(currentState));
         currentState = State.credits;
+        StartCoroutine(fade(currentState));
     }
     public void optionspressed()
     {
@@ -120,6 +124,13 @@ public class mainmenu : MonoBehaviour
     public void quitspressed()
     {
         currentState = State.quit;
+    }
+
+    public void returnpressed()
+    {
+        StartCoroutine(fadeOut(currentState));
+        currentState = State.menu;
+        StartCoroutine(fade(currentState));
     }
 
     IEnumerator fade(State FadeToState)
@@ -142,7 +153,7 @@ public class mainmenu : MonoBehaviour
 
             for (int i = 0; i < menuobjs[(int)FadeFromStat].Count; i++)
             {
-                menuobjs[(int)FadeFromStat][i].GetComponent<RectTransform>().anchoredPosition = new Vector2(Mathf.Lerp(menuobjspos[(int)FadeFromStat][i].x,2300.0f , t), menuobjspos[(int)FadeFromStat][i].y);
+                menuobjs[(int)FadeFromStat][i].GetComponent<RectTransform>().anchoredPosition = new Vector2(Mathf.Lerp(menuobjspos[(int)FadeFromStat][i].x,2500.0f , t), menuobjspos[(int)FadeFromStat][i].y);
             }
             yield return null;
 
