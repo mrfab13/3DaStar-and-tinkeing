@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class mainmenu : MonoBehaviour
 {
@@ -131,7 +132,6 @@ public class mainmenu : MonoBehaviour
             currentState = State.quit;
             Application.Quit();
         }
-
     }
 
     public void returnpressed()
@@ -145,7 +145,18 @@ public class mainmenu : MonoBehaviour
     {
         if (currentState == State.level)
         {
-            Debug.LogError("load level: " + level);
+            if (level == 1)
+            {
+                SceneManager.LoadScene(1);
+            }
+            if (level == 2)
+            {
+                SceneManager.LoadScene(2);
+            }
+            if (level == 3)
+            {
+                SceneManager.LoadScene(3);
+            }
         }
     }
 
@@ -172,7 +183,6 @@ public class mainmenu : MonoBehaviour
                 menuobjs[(int)FadeFromStat][i].GetComponent<RectTransform>().anchoredPosition = new Vector2(Mathf.Lerp(menuobjspos[(int)FadeFromStat][i].x,2500.0f , t), menuobjspos[(int)FadeFromStat][i].y);
             }
             yield return null;
-
         }
     }
 }
