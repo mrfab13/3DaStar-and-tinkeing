@@ -88,13 +88,14 @@ public class mainmenu : MonoBehaviour
 
         if (Input.anyKeyDown && currentState == State.title)
         {
+            StartCoroutine(fadeOut(currentState));
             currentState = State.menu;
             StartCoroutine(fade(currentState));
         }
 
         if (currentState == State.level)
-        { 
-        
+        {
+
         }
 
         if (currentState == State.quit)
@@ -127,8 +128,21 @@ public class mainmenu : MonoBehaviour
         {
             for (int i = 0; i < menuobjs[(int)FadeToState].Count; i++)
             {
-                Debug.Log(new Vector2(Mathf.Lerp(-1050.0f, menuobjspos[(int)FadeToState][0].x, t), menuobjspos[(int)FadeToState][0].y));
                 menuobjs[(int)FadeToState][i].GetComponent<RectTransform>().anchoredPosition = new Vector2(Mathf.Lerp(-1050.0f, menuobjspos[(int)FadeToState][i].x, t), menuobjspos[(int)FadeToState][i].y);
+            }
+            yield return null;
+
+        }
+    }
+
+    IEnumerator fadeOut(State FadeFromStat)
+    {
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / 1.0f)
+        {
+
+            for (int i = 0; i < menuobjs[(int)FadeFromStat].Count; i++)
+            {
+                menuobjs[(int)FadeFromStat][i].GetComponent<RectTransform>().anchoredPosition = new Vector2(Mathf.Lerp(menuobjspos[(int)FadeFromStat][i].x,2300.0f , t), menuobjspos[(int)FadeFromStat][i].y);
             }
             yield return null;
 
