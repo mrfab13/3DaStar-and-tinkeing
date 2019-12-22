@@ -97,28 +97,40 @@ public class mainmenu : MonoBehaviour
 
     public void playpressed()
     {
-        StartCoroutine(fadeOut(currentState));
-        currentState = State.level;
-        StartCoroutine(fade(currentState));
+        if (currentState == State.menu)
+        {
+            StartCoroutine(fadeOut(currentState));
+            currentState = State.level;
+            StartCoroutine(fade(currentState));
+        }
     }
     public void creditspressed()
     {
-        StartCoroutine(fadeOut(currentState));
-        currentState = State.credits;
-        StartCoroutine(fade(currentState));
+        if (currentState == State.menu)
+        {
+            StartCoroutine(fadeOut(currentState));
+            currentState = State.credits;
+            StartCoroutine(fade(currentState));
+        }
     }
     public void howtopressed()
     {
-        StartCoroutine(fadeOut(currentState));
-        currentState = State.howto;
-        StartCoroutine(fade(currentState));
+        if (currentState == State.menu)
+        {
+            StartCoroutine(fadeOut(currentState));
+            currentState = State.howto;
+            StartCoroutine(fade(currentState));
+        }
 
     }
     public void quitspressed()
     {
-        Debug.LogError("game quit!");
-        currentState = State.quit;
-        Application.Quit();
+        if (currentState == State.menu)
+        {
+            Debug.LogError("game quit!");
+            currentState = State.quit;
+            Application.Quit();
+        }
 
     }
 
@@ -131,7 +143,10 @@ public class mainmenu : MonoBehaviour
 
     public void loadLevel(int level)
     {
-        Debug.LogError("load level: " + level);
+        if (currentState == State.level)
+        {
+            Debug.LogError("load level: " + level);
+        }
     }
 
     IEnumerator fade(State FadeToState)
