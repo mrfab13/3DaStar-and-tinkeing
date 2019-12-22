@@ -97,28 +97,40 @@ public class mainmenu : MonoBehaviour
 
     public void playpressed()
     {
-        StartCoroutine(fadeOut(currentState));
-        currentState = State.level;
-        StartCoroutine(fade(currentState));
+        if (currentState == State.menu)
+        {
+            StartCoroutine(fadeOut(currentState));
+            currentState = State.level;
+            StartCoroutine(fade(currentState));
+        }
     }
     public void creditspressed()
     {
-        StartCoroutine(fadeOut(currentState));
-        currentState = State.credits;
-        StartCoroutine(fade(currentState));
+        if (currentState == State.menu)
+        {
+            StartCoroutine(fadeOut(currentState));
+            currentState = State.credits;
+            StartCoroutine(fade(currentState));
+        }
     }
     public void howtopressed()
     {
-        StartCoroutine(fadeOut(currentState));
-        currentState = State.howto;
-        StartCoroutine(fade(currentState));
+        if (currentState == State.menu)
+        {
+            StartCoroutine(fadeOut(currentState));
+            currentState = State.howto;
+            StartCoroutine(fade(currentState));
+        }
 
     }
     public void quitspressed()
     {
-        Debug.LogError("game quit!");
-        currentState = State.quit;
-        Application.Quit();
+        if (currentState == State.menu)
+        {
+            Debug.LogError("game quit!");
+            currentState = State.quit;
+            Application.Quit();
+        }
 
     }
 
@@ -131,12 +143,15 @@ public class mainmenu : MonoBehaviour
 
     public void loadLevel(int level)
     {
-        Debug.LogError("load level: " + level);
+        if (currentState == State.level)
+        {
+            Debug.LogError("load level: " + level);
+        }
     }
 
     IEnumerator fade(State FadeToState)
     {
-        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / 1.0f)
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime * 1.5f)
         {
             for (int i = 0; i < menuobjs[(int)FadeToState].Count; i++)
             {
@@ -149,7 +164,7 @@ public class mainmenu : MonoBehaviour
 
     IEnumerator fadeOut(State FadeFromStat)
     {
-        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / 1.0f)
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime * 1.5f)
         {
 
             for (int i = 0; i < menuobjs[(int)FadeFromStat].Count; i++)
