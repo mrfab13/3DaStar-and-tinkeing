@@ -151,7 +151,7 @@ public class mainmenu : MonoBehaviour
 
     IEnumerator fade(State FadeToState)
     {
-        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / 1.0f)
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime * 1.5f)
         {
             for (int i = 0; i < menuobjs[(int)FadeToState].Count; i++)
             {
@@ -164,7 +164,7 @@ public class mainmenu : MonoBehaviour
 
     IEnumerator fadeOut(State FadeFromStat)
     {
-        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / 1.0f)
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime * 1.5f)
         {
 
             for (int i = 0; i < menuobjs[(int)FadeFromStat].Count; i++)
