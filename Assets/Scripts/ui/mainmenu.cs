@@ -11,7 +11,7 @@ public class mainmenu : MonoBehaviour
         menu,
         level,
         credits,
-        options,
+        howto,
         quit,
     }
 
@@ -23,14 +23,14 @@ public class mainmenu : MonoBehaviour
     public List<GameObject> menu = new List<GameObject>();
     public List<GameObject> level = new List<GameObject>();
     public List<GameObject> credits = new List<GameObject>();
-    public List<GameObject> options = new List<GameObject>();
+    public List<GameObject> howto = new List<GameObject>();
 
     public List<List<Vector2>> menuobjspos = new List<List<Vector2>>();
     public List<Vector2> titlepos = new List<Vector2>();
     public List<Vector2> menupos = new List<Vector2>();
     public List<Vector2> levelpos = new List<Vector2>();
     public List<Vector2> creditspos = new List<Vector2>();
-    public List<Vector2> optionspos = new List<Vector2>();
+    public List<Vector2> howtopos = new List<Vector2>();
 
 
 
@@ -41,7 +41,7 @@ public class mainmenu : MonoBehaviour
         menuobjs.Add(menu);
         menuobjs.Add(level);
         menuobjs.Add(credits);
-        menuobjs.Add(options);
+        menuobjs.Add(howto);
 
 
         for (int i = 0; i < title.Count; i++)
@@ -66,9 +66,9 @@ public class mainmenu : MonoBehaviour
             creditspos.Add(menuobjs[3][i].transform.localPosition);
             menuobjs[3][i].GetComponent<RectTransform>().anchoredPosition = new Vector2(-1050.0f, menuobjs[3][i].transform.localPosition.y);
         }
-        for (int i = 0; i < options.Count; i++)
+        for (int i = 0; i < howto.Count; i++)
         {
-            optionspos.Add(menuobjs[4][i].transform.localPosition);
+            howtopos.Add(menuobjs[4][i].transform.localPosition);
             menuobjs[4][i].GetComponent<RectTransform>().anchoredPosition = new Vector2(-1050.0f, menuobjs[4][i].transform.localPosition.y);
         }
 
@@ -76,7 +76,7 @@ public class mainmenu : MonoBehaviour
         menuobjspos.Add(menupos);
         menuobjspos.Add(levelpos);
         menuobjspos.Add(creditspos);
-        menuobjspos.Add(optionspos);
+        menuobjspos.Add(howtopos);
 
         currentState = State.title;
         StartCoroutine(fade(currentState));
@@ -93,18 +93,6 @@ public class mainmenu : MonoBehaviour
             StartCoroutine(fade(currentState));
         }
 
-        if (currentState == State.level)
-        {
-
-        }
-
-        if (currentState == State.quit)
-        {
-            Application.Quit();
-        }
-
-
-
     }
 
     public void playpressed()
@@ -117,13 +105,19 @@ public class mainmenu : MonoBehaviour
         currentState = State.credits;
         StartCoroutine(fade(currentState));
     }
-    public void optionspressed()
+    public void howtopressed()
     {
-        currentState = State.options;
+        StartCoroutine(fadeOut(currentState));
+        currentState = State.howto;
+        StartCoroutine(fade(currentState));
+
     }
     public void quitspressed()
     {
+        Debug.LogError("game quit!");
         currentState = State.quit;
+        Application.Quit();
+
     }
 
     public void returnpressed()
