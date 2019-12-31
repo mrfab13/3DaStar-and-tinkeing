@@ -8,6 +8,8 @@ public class ShowPath : MonoBehaviour
     public Vector3 posA;
     public NavMeshAgent agent;
     public float lifetime;
+    private float spawnDely = 0.5f;
+    private float timer;
 
     void Start()
     {
@@ -19,21 +21,26 @@ public class ShowPath : MonoBehaviour
     void Update()
     {
         agent.SetDestination(posA);
-
-        if (hasarrived() == true)
+        if (spawnDely >= 0.0f)
         {
-            StartCoroutine(selfdestruct(lifetime));
+            spawnDely -= Time.deltaTime;
         }
-
+        if (spawnDely < 0.0f)
+        {
+            if (hasarrived() == true || GameObject.Find("spawner").GetComponent<spawner>().currentGameSatae != spawner.gamestate.pre)
+            {
+                StartCoroutine(selfdestruct(lifetime));
+            }
+        }
     }
 
     public bool hasarrived()
     {
-        if (!agent.pathPending)
+        if (!agent.pathPending || agent.velocity.sqrMagnitude <= 0.1f)
         {
-            if (agent.remainingDistance <= agent.stoppingDistance || agent.velocity.sqrMagnitude <= 0.3f)
+            if (agent.remainingDistance <= agent.stoppingDistance || agent.velocity.sqrMagnitude <= 0.1f)
             {
-                if (!agent.hasPath || agent.velocity.sqrMagnitude <= 0.3f)
+                if (!agent.hasPath || agent.velocity.sqrMagnitude <= 0.1f)
                 {
                     return true;
                 }

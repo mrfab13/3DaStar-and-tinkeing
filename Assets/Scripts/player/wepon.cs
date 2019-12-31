@@ -48,7 +48,7 @@ public class wepon : MonoBehaviour
             Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out Hit);
             if (Input.GetButton("Fire1") == true)
             {
-                if (Hit.collider.gameObject.layer == 9)
+                if (Hit.collider.gameObject.layer == 9 || Hit.collider.gameObject.tag == "block")
                 {
                     Instantiate(block, Hit.point, Quaternion.identity);
 
@@ -67,15 +67,20 @@ public class wepon : MonoBehaviour
 
             if (Input.GetButton("Submit") == true)
             {
+                NavMesh.CalculatePath(GameObject.Find("spawner").transform.position, GameObject.Find("spawner").GetComponent<spawner>().posA, NavMesh.AllAreas, path);
 
-                if (!NavMesh.CalculatePath(transform.position, GameObject.Find("spawner").GetComponent<spawner>().posA, NavMesh.AllAreas, path) == true)
+                if (path.status == NavMeshPathStatus.PathComplete)
                 {
                     GameObject.Find("spawner").GetComponent<spawner>().currentGameSatae = spawner.gamestate.wave;
-
                 }
                 else
                 {
                     Debug.Log("no valid path");
+                }
+
+                for (int i = 0; i < path.corners.Length - 1; i++)
+                {
+                    Debug.DrawLine(path.corners[i], path.corners[i + 1], Color.red);
                 }
             }
 
