@@ -9,6 +9,6 @@ public class lookat : MonoBehaviour
     {
 
 
-        transform.LookAt(new Vector3(target.position.x, gameObject.transform.position.y + gameObject.GetComponentInParent<Transform>().position.y, target.position.z));
+        transform.LookAt(new Vector3(target.position.x, this.gameObject.transform.position.y, target.position.z));
     }
 }

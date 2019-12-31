@@ -1,45 +1,87 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class wepon : MonoBehaviour
 {
     public float fireRate = 1.0f;
     public float timer = 0.0f;
-
+    public NavMeshSurface surface;
     public Animator pew;
+    public GameObject block;
+    private NavMeshPath path;
+
+    void Start()
+    {
+        path = new NavMeshPath();
+    }
 
     void Update()
     {
-
         if (timer > 0.0f)
         {
             timer -= Time.deltaTime;
         }
 
-        if (Input.GetButton("Fire1") == true)
+        if (GameObject.Find("spawner").GetComponent<spawner>().currentGameSatae == spawner.gamestate.wave)
         {
-            Debug.Log("try");
-
-            if (timer <= 0.0f)
+            if (Input.GetButton("Fire1") == true)
             {
-                StartCoroutine(shot());
-
-
-
-                RaycastHit Hit;
-                Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out Hit);
-
-                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward), Color.red, 1.0f);
-
-                if (Hit.collider.gameObject.transform.tag == "enemy")
+                if (timer <= 0.0f)
                 {
-                    Hit.collider.gameObject.GetComponent<enemy>().hp -= 25.0f;
+                    StartCoroutine(shot());
+                    RaycastHit Hit;
+                    Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out Hit);
+                    if (Hit.collider.gameObject.transform.tag == "enemy")
+                    {
+                        Hit.collider.gameObject.GetComponent<enemy>().hp -= 25.0f;
+                    }
                 }
             }
-            
+        }
+
+
+        if (GameObject.Find("spawner").GetComponent<spawner>().currentGameSatae == spawner.gamestate.pre)
+        {
+            RaycastHit Hit;
+            Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out Hit);
+            if (Input.GetButton("Fire1") == true)
+            {
+                if (Hit.collider.gameObject.layer == 9)
+                {
+                    Instantiate(block, Hit.point, Quaternion.identity);
+
+                    surface.BuildNavMesh();
+                }
+            }
+
+            if (Input.GetButton("Fire2") == true)
+            {
+                if (Hit.collider.tag == "block")
+                {
+                    Destroy(Hit.collider.gameObject);
+                    surface.BuildNavMesh();
+                }
+            }
+
+            if (Input.GetButton("Submit") == true)
+            {
+
+                if (!NavMesh.CalculatePath(transform.position, GameObject.Find("spawner").GetComponent<spawner>().posA, NavMesh.AllAreas, path) == true)
+                {
+                    GameObject.Find("spawner").GetComponent<spawner>().currentGameSatae = spawner.gamestate.wave;
+
+                }
+                else
+                {
+                    Debug.Log("no valid path");
+                }
+            }
 
         }
+
+
     }
 
     IEnumerator shot()
