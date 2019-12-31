@@ -45,7 +45,7 @@ public class wepon : MonoBehaviour
     IEnumerator shot()
     {
         timer = fireRate;
-        gameObject.GetComponent<AudioSource>().Play();
+        gameObject.GetComponentInParent<AudioSource>().Play();
         pew.Play("pew");
         GameObject.Find("muzzle").gameObject.transform.GetChild(0).gameObject.SetActive(true);
         yield return new WaitForSeconds(0.1f);
