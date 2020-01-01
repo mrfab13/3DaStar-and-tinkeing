@@ -50,7 +50,14 @@ public class wepon : MonoBehaviour
             {
                 if (Hit.collider.gameObject.layer == 9 || Hit.collider.gameObject.tag == "block")
                 {
-                    Instantiate(block, Hit.point, Quaternion.identity);
+                    GameObject temp = Instantiate(block, Hit.point, Quaternion.identity);
+
+
+
+                    ///temp.transform.position += direction * (-distance / 2);
+
+
+
 
                     surface.BuildNavMesh();
                 }
