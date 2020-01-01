@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class wepon : MonoBehaviour
 {
     public float fireRate = 1.0f;
+    public float placerate = 0.1f;
     public float timer = 0.0f;
     public NavMeshSurface surface;
     public Animator pew;
@@ -48,19 +49,18 @@ public class wepon : MonoBehaviour
             Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out Hit);
             if (Input.GetButton("Fire1") == true)
             {
-                if (Hit.collider.gameObject.layer == 9 || Hit.collider.gameObject.tag == "block")
+                if (timer <= 0.0f)
                 {
-                    GameObject temp = Instantiate(block, Hit.point, Quaternion.identity);
+                    timer = placerate;
+                    if (Hit.collider.gameObject.layer == 9 || Hit.collider.gameObject.tag == "block")
+                    {
 
+                        GameObject temp = Instantiate(block, Hit.point, Quaternion.identity);
+                        surface.BuildNavMesh();
+                    }
 
-
-                    ///temp.transform.position += direction * (-distance / 2);
-
-
-
-
-                    surface.BuildNavMesh();
                 }
+
             }
 
             if (Input.GetButton("Fire2") == true)
