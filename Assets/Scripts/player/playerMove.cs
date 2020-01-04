@@ -16,6 +16,7 @@ public class playerMove : MonoBehaviour
     public float speed = 12.0f;
     public float BaseSpeed = 12.0f;
     public float SprintSpeed = 12.0f;
+    public float StrafeSpeed = 12.0f;
 
 
     public float gravity = -9.80655f;
@@ -46,6 +47,11 @@ public class playerMove : MonoBehaviour
         else 
         {
             speed = BaseSpeed;
+        }
+
+        if (GameObject.Find("spawner").GetComponent<spawner>().currentGameSatae == spawner.gamestate.wave && Input.GetButton("Fire2") == true)
+        {
+            speed = StrafeSpeed;
         }
 
         controler.Move(Move.normalized * speed * Time.deltaTime);

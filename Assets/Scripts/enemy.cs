@@ -13,32 +13,19 @@ public class enemy : MonoBehaviour
 
     public bool tofrom = true;
     public Vector3 posA;
-    public Vector3 posB;
 
+    void Start()
+    {
+        posA = GameObject.Find("spawner").GetComponent<spawner>().posA;
+    }
 
 
     void Update()
     {
         gameObject.transform.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = hp / max;
 
-        if (tofrom == true)
-        {
-            agent.SetDestination(posA);
-            if (hasarrived() == true)
-            {
-                tofrom = false;
-            }
-        }
-        else 
-        {
-            agent.SetDestination(posB);
-            if (hasarrived() == true)
-            {
-                tofrom = true;
-            }
-        }
-
-
+  
+        agent.SetDestination(posA);
 
         if (hp <= 0.0f)
         {

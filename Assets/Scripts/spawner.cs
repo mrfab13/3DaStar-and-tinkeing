@@ -18,7 +18,7 @@ public class spawner : MonoBehaviour
     public float trailSpawnerDelay = 1.0f;
 
     public int currWave = 0;
-    public List<GameObject> waves;
+    public List<GameObject> enemies;
 
     bool onceWave = false;
 
@@ -52,7 +52,7 @@ public class spawner : MonoBehaviour
             if (timer >= trailSpawnerDelay)
             {
                 timer = 0.0f;
-                Instantiate(waves[currWave], this.transform.position, Quaternion.identity);
+                Instantiate(enemies[currWave - 1], this.transform.position, Quaternion.identity);
             }
         }
     }
