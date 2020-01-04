@@ -12,6 +12,8 @@ public class wepon : MonoBehaviour
     public float MaxRange = 15.0f;
     public float MaxDamage = 25.0f;
     public float pellets = 8.0f;
+    public float bulletSpread = 0.1f;
+
     public NavMeshSurface surface;
     public Animator pew;
     public GameObject block;
@@ -31,6 +33,8 @@ public class wepon : MonoBehaviour
             timer -= Time.deltaTime;
         }
 
+
+
         if (GameObject.Find("spawner").GetComponent<spawner>().currentGameSatae == spawner.gamestate.wave)
         {
             if (Input.GetButton("Fire1") == true)
@@ -41,12 +45,21 @@ public class wepon : MonoBehaviour
                     for (int j = 0; j < pellets; j++)  
                     {
                         RaycastHit[] Hits;
-                        Vector3 vec3dir = new Vector3(Random.Range(0.1f, -0.1f), Random.Range(0.1f, -0.1f), 1);
 
                         if (Input.GetButton("Fire2") == true)
                         {
-                            vec3dir = new Vector3(Random.Range(0.02f, -0.02f), Random.Range(0.02f, -0.02f), 1);
+                            bulletSpread = 0.02f;
                         }
+                        else
+                        {
+                            bulletSpread = 0.1f;
+                        }
+
+                        float yrand = Random.Range(bulletSpread, -bulletSpread);
+                        float xrand = Random.Range(Mathf.Sqrt(Mathf.Pow(bulletSpread, 2) - Mathf.Pow(yrand, 2)), -Mathf.Sqrt(Mathf.Pow(bulletSpread, 2) - Mathf.Pow(yrand, 2)));
+                        Vector3 vec3dir = new Vector3(xrand, yrand, 1);
+
+
 
                         Hits = Physics.RaycastAll(transform.position, transform.TransformDirection(vec3dir), MaxRange);
                         for (int i = 0; i < Hits.Length; i++)
