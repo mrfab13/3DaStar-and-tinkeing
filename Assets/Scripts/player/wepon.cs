@@ -13,6 +13,7 @@ public class wepon : MonoBehaviour
     public float MaxDamage = 25.0f;
     public float pellets = 8.0f;
     public float bulletSpread = 0.1f;
+    
 
     public NavMeshSurface surface;
     public Animator pew;
@@ -20,6 +21,8 @@ public class wepon : MonoBehaviour
     public GameObject bulletHole;
     public GameObject damagedText;
     private NavMeshPath path;
+    private bool oncePre = true;
+    private bool onceWave = true;
 
     void Start()
     {
@@ -37,6 +40,21 @@ public class wepon : MonoBehaviour
 
         if (GameObject.Find("spawner").GetComponent<spawner>().currentGameSatae == spawner.gamestate.wave)
         {
+            if (onceWave == true)
+            {
+                onceWave = false;
+                oncePre = true;
+            }
+
+            if (Input.GetButton("Fire2") == true)
+            {
+                bulletSpread = 0.02f;
+            }
+            else
+            {
+                bulletSpread = 0.1f;
+            }
+
             if (Input.GetButton("Fire1") == true)
             {
                 if (timer <= 0.0f)
@@ -46,14 +64,7 @@ public class wepon : MonoBehaviour
                     {
                         RaycastHit[] Hits;
 
-                        if (Input.GetButton("Fire2") == true)
-                        {
-                            bulletSpread = 0.02f;
-                        }
-                        else
-                        {
-                            bulletSpread = 0.1f;
-                        }
+
 
                         float yrand = Random.Range(bulletSpread, -bulletSpread);
                         float xrand = Random.Range(Mathf.Sqrt(Mathf.Pow(bulletSpread, 2) - Mathf.Pow(yrand, 2)), -Mathf.Sqrt(Mathf.Pow(bulletSpread, 2) - Mathf.Pow(yrand, 2)));
@@ -98,6 +109,13 @@ public class wepon : MonoBehaviour
 
         if (GameObject.Find("spawner").GetComponent<spawner>().currentGameSatae == spawner.gamestate.pre)
         {
+            if (oncePre == true)
+            {
+                oncePre = false;
+                onceWave = true;
+                bulletSpread = 0.001f;
+            }
+
             RaycastHit Hit;
             Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out Hit);
             if (Input.GetButton("Fire1") == true)
