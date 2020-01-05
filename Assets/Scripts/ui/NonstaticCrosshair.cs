@@ -15,8 +15,6 @@ public class NonstaticCrosshair : MonoBehaviour
     void Update()
     {
         bulletspread = GameObject.Find("player").gameObject.transform.GetChild(0).GetComponent<wepon>().bulletSpread;
-
-
         applyPos(bulletspread);
     }
 
