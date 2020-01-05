@@ -13,6 +13,7 @@ public class wepon : MonoBehaviour
     public float MaxDamage = 25.0f;
     public float pellets = 8.0f;
     public float bulletSpread = 0.1f;
+    public float ADSSpeed = 2.0f;
     
 
     public NavMeshSurface surface;
@@ -23,9 +24,12 @@ public class wepon : MonoBehaviour
     private NavMeshPath path;
     private bool oncePre = true;
     private bool onceWave = true;
+    private bool onceADS = false;
+    private IEnumerator spreadcoro;
 
     void Start()
     {
+        spreadcoro = bulletspread(bulletSpread, bulletSpread);
         path = new NavMeshPath();
     }
 
@@ -46,13 +50,21 @@ public class wepon : MonoBehaviour
                 oncePre = true;
             }
 
-            if (Input.GetButton("Fire2") == true)
+            if (Input.GetButton("Fire2") == true && onceADS == true)
             {
-                bulletSpread = 0.02f;
+                onceADS = false;
+                StopCoroutine(spreadcoro);
+                spreadcoro = bulletspread(0.02f, bulletSpread);
+                StartCoroutine(spreadcoro);
+                //bulletSpread = 0.02f;
             }
-            else
+            if (Input.GetButton("Fire2") == false && onceADS == false)
             {
-                bulletSpread = 0.1f;
+                onceADS = true;
+                StopCoroutine(spreadcoro);
+                spreadcoro = bulletspread(0.1f, bulletSpread);
+                StartCoroutine(spreadcoro);
+                //bulletSpread = 0.1f;
             }
 
             if (Input.GetButton("Fire1") == true)
@@ -175,5 +187,15 @@ public class wepon : MonoBehaviour
         GameObject.Find("muzzle").gameObject.transform.GetChild(0).gameObject.SetActive(true);
         yield return new WaitForSeconds(0.1f);
         GameObject.Find("muzzle").gameObject.transform.GetChild(0).gameObject.SetActive(false);
+    }
+
+    IEnumerator bulletspread(float to, float from)
+    {
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime * ADSSpeed)
+        {
+            bulletSpread = Mathf.Lerp(from, to, t);
+            yield return null;
+
+        }
     }
 }
