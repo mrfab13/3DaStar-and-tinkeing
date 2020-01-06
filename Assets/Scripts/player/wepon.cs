@@ -21,14 +21,24 @@ public class wepon : MonoBehaviour
     public GameObject block;
     public GameObject bulletHole;
     public GameObject damagedText;
+    public GameObject Launcher;
     private NavMeshPath path;
     private bool oncePre = true;
     private bool onceWave = true;
     private bool onceADS = false;
     private IEnumerator spreadcoro;
 
+    public enum wepons
+    { 
+        build,
+        missileLauncher,
+        shotty,
+    }
+    public wepons equipped;
+
     void Start()
     {
+        equipped = wepons.build;
         spreadcoro = bulletspread(bulletSpread, bulletSpread);
         path = new NavMeshPath();
     }
@@ -42,7 +52,7 @@ public class wepon : MonoBehaviour
 
 
 
-        if (GameObject.Find("spawner").GetComponent<spawner>().currentGameSatae == spawner.gamestate.wave)
+        if (GameObject.Find("spawner").GetComponent<spawner>().currentGameSatae == spawner.gamestate.wave && equipped == wepons.shotty)
         {
             if (onceWave == true)
             {
@@ -56,7 +66,6 @@ public class wepon : MonoBehaviour
                 StopCoroutine(spreadcoro);
                 spreadcoro = bulletspread(0.02f, bulletSpread);
                 StartCoroutine(spreadcoro);
-                //bulletSpread = 0.02f;
             }
             if (Input.GetButton("Fire2") == false && onceADS == false)
             {
@@ -64,7 +73,6 @@ public class wepon : MonoBehaviour
                 StopCoroutine(spreadcoro);
                 spreadcoro = bulletspread(0.1f, bulletSpread);
                 StartCoroutine(spreadcoro);
-                //bulletSpread = 0.1f;
             }
 
             if (Input.GetButton("Fire1") == true)
@@ -123,36 +131,24 @@ public class wepon : MonoBehaviour
         {
             if (oncePre == true)
             {
+                equipped = wepons.build;
+                GameObject.Find("Canvas").gameObject.transform.GetChild(4).gameObject.SetActive(true);
+                GameObject.Find("Canvas").gameObject.transform.GetChild(5).gameObject.SetActive(true);
+                GameObject.Find("Canvas").gameObject.transform.GetChild(6).gameObject.SetActive(true);
                 oncePre = false;
                 onceWave = true;
                 bulletSpread = 0.001f;
             }
 
-            RaycastHit Hit;
-            Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out Hit);
-            if (Input.GetButton("Fire1") == true)
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                if (timer <= 0.0f)
-                {
-                    timer = placerate;
-                    if (Hit.collider.gameObject.layer == 9 || Hit.collider.gameObject.tag == "block")
-                    {
-
-                        GameObject temp = Instantiate(block, Hit.point, Quaternion.identity);
-                        surface.BuildNavMesh();
-                    }
-
-                }
-
+                GameObject.Find("Canvas").GetComponent<EqupedWepon>().fromto(wepons.build);
+                equipped = wepons.build;
             }
-
-            if (Input.GetButton("Fire2") == true)
+            if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                if (Hit.collider.tag == "block")
-                {
-                    Destroy(Hit.collider.gameObject);
-                    surface.BuildNavMesh();
-                }
+                GameObject.Find("Canvas").GetComponent<EqupedWepon>().fromto(wepons.missileLauncher);
+                equipped = wepons.missileLauncher;
             }
 
             if (Input.GetButton("Submit") == true)
@@ -161,6 +157,11 @@ public class wepon : MonoBehaviour
 
                 if (path.status == NavMeshPathStatus.PathComplete)
                 {
+                    equipped = wepons.shotty;
+                    GameObject.Find("Canvas").gameObject.transform.GetChild(4).gameObject.SetActive(false);
+                    GameObject.Find("Canvas").gameObject.transform.GetChild(5).gameObject.SetActive(false);
+                    GameObject.Find("Canvas").gameObject.transform.GetChild(6).gameObject.SetActive(false);
+
                     GameObject.Find("spawner").GetComponent<spawner>().currentGameSatae = spawner.gamestate.wave;
                 }
                 else
@@ -171,6 +172,55 @@ public class wepon : MonoBehaviour
                 for (int i = 0; i < path.corners.Length - 1; i++)
                 {
                     Debug.DrawLine(path.corners[i], path.corners[i + 1], Color.red);
+                }
+            }
+
+            if (equipped == wepons.build)
+            {
+                RaycastHit Hit;
+                Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out Hit);
+                if (Input.GetButton("Fire1") == true)
+                {
+                    if (timer <= 0.0f)
+                    {
+                        timer = placerate;
+                        if (Hit.collider.gameObject.layer == 9 || Hit.collider.gameObject.tag == "block")
+                        {
+
+                            GameObject temp = Instantiate(block, Hit.point, Quaternion.identity);
+                            surface.BuildNavMesh();
+                        }
+
+                    }
+
+                }
+
+                if (Input.GetButton("Fire2") == true)
+                {
+                    if (Hit.collider.tag == "block")
+                    {
+                        Destroy(Hit.collider.gameObject);
+                        surface.BuildNavMesh();
+                    }
+                }
+            }
+
+            if (equipped == wepons.missileLauncher)
+            {
+                RaycastHit Hit;
+                Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out Hit);
+                if (Input.GetButton("Fire1") == true)
+                {
+                    if (timer <= 0.0f)
+                    {
+                        timer = placerate;
+                        if (Hit.collider.gameObject.layer == 9 || Hit.collider.gameObject.tag == "block")
+                        {
+                            GameObject temp = Instantiate(Launcher, new Vector3(Hit.point.x, Hit.point.y + 0.01f, Hit.point.z), Quaternion.identity * Quaternion.Euler(90, 0, 0));
+                        }
+
+                    }
+
                 }
             }
 

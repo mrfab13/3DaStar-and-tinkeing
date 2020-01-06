@@ -6,7 +6,7 @@ public class missile : MonoBehaviour
 {
     public Vector3 start;
     public Vector3 skyTarget;
-    public Vector3 target;
+    public GameObject TargetObj;
     public LayerMask enemy;
     public GameObject Explosion;
 
@@ -16,7 +16,7 @@ public class missile : MonoBehaviour
     void Start()
     {
         start = this.transform.position;
-        direction = (target - skyTarget).normalized;
+        direction = (TargetObj.transform.position - skyTarget).normalized;
         lookrotation = Quaternion.LookRotation(direction);
         lookrotation *= Quaternion.Euler(90, 0, 0);
         StartCoroutine(up());
@@ -39,7 +39,7 @@ public class missile : MonoBehaviour
     {
         for (float t = 0.0f; t < 1.0f; t += Time.deltaTime)
         {
-            this.transform.position = new Vector3(Mathf.Lerp(skyTarget.x, target.x, t), Mathf.Lerp(skyTarget.y, target.y, t), Mathf.Lerp(skyTarget.z, target.z, t));
+            this.transform.position = new Vector3(Mathf.Lerp(skyTarget.x, TargetObj.transform.position.x, t), Mathf.Lerp(skyTarget.y, TargetObj.transform.position.y, t), Mathf.Lerp(skyTarget.z, TargetObj.transform.position.z, t));
             yield return null;
         }
 

@@ -33,7 +33,7 @@ public class ChungusLaunch : MonoBehaviour
                 timer = fireate;
                 GameObject temp = Instantiate(missile, this.transform.position, Quaternion.identity);
                 temp.GetComponent<missile>().skyTarget = skytarget;
-                temp.GetComponent<missile>().target = colliders[0].gameObject.transform.position;
+                temp.GetComponent<missile>().TargetObj = colliders[0].gameObject;
             }
         }
 
