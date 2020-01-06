@@ -8,7 +8,7 @@ public class missile : MonoBehaviour
     public Vector3 skyTarget;
     public Vector3 target;
     public LayerMask enemy;
-
+    public GameObject Explosion;
 
     private Vector3 direction;
     private Quaternion lookrotation;
@@ -56,5 +56,8 @@ public class missile : MonoBehaviour
         }
 
         this.gameObject.transform.GetChild(0).GetComponent<SkinnedMeshRenderer>().enabled = false;
+        this.gameObject.GetComponent<AudioSource>().Stop();
+        Instantiate(Explosion, this.gameObject.transform.position, Quaternion.identity);
+
     }
 }

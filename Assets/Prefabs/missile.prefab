@@ -1723,6 +1723,8 @@ MonoBehaviour:
   enemy:
     serializedVersion: 2
     m_Bits: 2048
+  Explosion: {fileID: 1995514571126042608, guid: 413af8f84bc1d964b97eb84ca7da6c9d,
+    type: 3}
 --- !u!82 &-8678224407229620534
 AudioSource:
   m_ObjectHideFlags: 0
