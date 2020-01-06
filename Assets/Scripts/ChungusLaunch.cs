@@ -6,6 +6,7 @@ public class ChungusLaunch : MonoBehaviour
 {
     public float fireate = 1.0f;
     public GameObject missile;
+    public LayerMask enemy;
 
     private Vector3 skytarget;
     private float timer;
@@ -21,16 +22,20 @@ public class ChungusLaunch : MonoBehaviour
         {
             timer -= Time.deltaTime;
         }
-    }
 
-    void OnCollisionStay(Collision collision)
-    {
         if (timer <= 0.0f)
         {
-            timer = fireate;
-            GameObject temp = Instantiate(missile, this.transform.position, Quaternion.identity);
-            temp.GetComponent<missile>().skyTarget = skytarget;
-            temp.GetComponent<missile>().target = collision.transform.position;
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 7.0f, enemy);
+
+
+            if (colliders.Length > 0)
+            {
+                timer = fireate;
+                GameObject temp = Instantiate(missile, this.transform.position, Quaternion.identity);
+                temp.GetComponent<missile>().skyTarget = skytarget;
+                temp.GetComponent<missile>().target = colliders[0].gameObject.transform.position;
+            }
         }
+
     }
 }
