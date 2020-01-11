@@ -39,7 +39,6 @@ public class damagedText : MonoBehaviour
 
         }
 
-        Debug.Log("desatroyed");
         Destroy(this.gameObject.transform.parent.gameObject);
     }
 }

@@ -189,6 +189,7 @@ public class wepon : MonoBehaviour
 
                             GameObject temp = Instantiate(block, Hit.point, Quaternion.identity);
                             surface.BuildNavMesh();
+                            GameObject.Find("sliderholder").GetComponent<stonks>().chnagecash(-2.0f);
                         }
 
                     }
