@@ -5,7 +5,7 @@ using System.IO;
 
 public class dlltest : MonoBehaviour
 {
-    [DllImport("TEST1", EntryPoint = "TestDivide")]
+    [DllImport("test2", EntryPoint = "TestDivide")]
     public static extern float StraightFromDllTestDivide(float a, float b);
 
     void Start()
