@@ -10,8 +10,5 @@ public class iamryan : MonoBehaviour
         Debug.Log(ans);
     }
 
-    void Update()
-    {
-        
-    }
+
 }
