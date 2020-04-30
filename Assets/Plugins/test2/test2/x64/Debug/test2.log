@@ -1,8 +1,0 @@
-﻿  pch.cpp
-  dllmain.cpp
-F:\programs\personal\game\BTDHD\BTDHD\TDHD\Assets\Plugins\test2\test2\dllmain.cpp(6,5): warning C4273: 'TestMultiply': inconsistent dll linkage
-F:\programs\personal\game\BTDHD\BTDHD\TDHD\Assets\Plugins\test2\test2\Test2.h(9,21): message : see previous definition of 'TestMultiply'
-F:\programs\personal\game\BTDHD\BTDHD\TDHD\Assets\Plugins\test2\test2\dllmain.cpp(11,5): warning C4273: 'TestDivide': inconsistent dll linkage
-F:\programs\personal\game\BTDHD\BTDHD\TDHD\Assets\Plugins\test2\test2\Test2.h(10,21): message : see previous definition of 'TestDivide'
-     Creating library F:\programs\personal\game\BTDHD\BTDHD\TDHD\Assets\Plugins\test2\x64\Debug\test2.lib and object F:\programs\personal\game\BTDHD\BTDHD\TDHD\Assets\Plugins\test2\x64\Debug\test2.exp
-  test2.vcxproj -> F:\programs\personal\game\BTDHD\BTDHD\TDHD\Assets\Plugins\test2\x64\Debug\test2.dll
