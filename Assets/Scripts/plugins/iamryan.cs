@@ -8,8 +8,10 @@ public class iamryan : MonoBehaviour
     public List<GameObject> boxes = new List<GameObject>() { };
     public GameObject nodePrefab;
     public float deets;
-
+    public GameObject source;
     public bool reclaculatepath;
+    public bool movment = false;
+    public float movespeed;
 
     private void Start()
     {
@@ -18,6 +20,7 @@ public class iamryan : MonoBehaviour
         {
             Path.boxes.Add(boxes[i]);
         }
+        Path.source = source;
     }
 
 
@@ -26,6 +29,12 @@ public class iamryan : MonoBehaviour
         if (reclaculatepath == true)
         {
             recalculate();
+        }
+
+        if (movment == true)
+        {
+            Path.movespeed = movespeed;
+            Path.movement();
         }
     }
 
