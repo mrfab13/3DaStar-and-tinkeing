@@ -5,7 +5,7 @@ using pathfind;
 
 public class iamryan : MonoBehaviour
 {
-    public List<GameObject> boxes = new List<GameObject>() { };
+    public GameObject boxes;
     public GameObject nodePrefab;
     public float deets;
     public GameObject source;
@@ -16,10 +16,7 @@ public class iamryan : MonoBehaviour
     private void Start()
     {
         Path.nodeprefab = nodePrefab;
-        for (int i = 0; i < boxes.Count; i++)
-        {
-            Path.boxes.Add(boxes[i]);
-        }
+        Path.boxes = boxes;
         Path.source = source;
     }
 
@@ -56,9 +53,9 @@ public class iamryan : MonoBehaviour
     {
         
         Path.detail = deets;
+        reclaculatepath = false;
 
         Path.CalculatePath();
-        reclaculatepath = false;
 
         redrawnodes();
     }
