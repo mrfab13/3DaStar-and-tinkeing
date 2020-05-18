@@ -16,7 +16,7 @@ public class iamryan : MonoBehaviour
     private void Start()
     {
         Path.nodeprefab = nodePrefab;
-        Path.boxes = boxes;
+        Path.thebox = boxes;
         Path.source = source;
     }
 
@@ -58,5 +58,15 @@ public class iamryan : MonoBehaviour
         Path.CalculatePath();
 
         redrawnodes();
+    }
+
+
+    void OnDrawGizmos()
+    {
+        for (int i = 0; i < Path.pathlist.Count; i++)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawCube(Path.pathlist[i].returnpos(), new Vector3((Path.detail / 4.0f), (Path.detail / 4.0f), (Path.detail / 4.0f)));
+        }
     }
 }
