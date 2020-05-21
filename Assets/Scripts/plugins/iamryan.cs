@@ -12,7 +12,6 @@ public class iamryan : MonoBehaviour
 
     public bool reclaculatepath;
     public bool movment = false;
-    public float movespeed;
 
     private window editwindow;
     private void Start()
@@ -23,6 +22,11 @@ public class iamryan : MonoBehaviour
 
     private void Update()
     {
+        if (editwindow == null)
+        {
+            editwindow = (window)EditorWindow.GetWindow(typeof(window));
+        }
+
         if (reclaculatepath == true)
         {
             recalculate();
@@ -30,16 +34,18 @@ public class iamryan : MonoBehaviour
 
         if (movment == true)
         {
-            Path.movespeed = movespeed;
+            Path.movespeed = editwindow.movespeed;
             Path.movement();
         }
     }
 
     public void recalculate()
     {
-        Path.startphysical = source.transform.position;
-        Path.finishphysical = destination.transform.position;
+        Path.startphysical = source;
+        Path.finishphysical = destination;
 
+        Path.stopnextto = editwindow.stopnextto;
+        Path.recalculateEachStep = editwindow.recalc;
         Path.BBbounds = editwindow.testbounds;
         Path.BBbounds.extents = new Vector3((Path.BBbounds.extents.x / 2.0f), (Path.BBbounds.extents.y / 2.0f), (Path.BBbounds.extents.z / 2.0f));
         Path.detail = deets;
