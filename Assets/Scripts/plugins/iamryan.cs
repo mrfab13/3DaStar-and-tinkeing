@@ -6,25 +6,29 @@ using UnityEditor;
 
 public class iamryan : MonoBehaviour
 {
-    public float deets;
-    public GameObject source;
-    public GameObject destination;
-
-    public bool reclaculatepath;
+    public bool reclaculatepath = false;
     public bool movment = false;
-
+    public bool movfinished = false;
     private window editwindow;
-    private void Start()
-    {
-        Path.source = source;
-    }
+    public GameObject returnto;
 
-
-    private void Update()
+    void Update()
     {
         if (editwindow == null)
         {
             editwindow = (window)EditorWindow.GetWindow(typeof(window));
+        }
+
+        movfinished = Path.endofmovereached;
+        if (movfinished == true)
+        {
+            editwindow.destination = returnto;
+        }
+
+
+        if (Path.iamryanrecalc == true)
+        {
+            reclaculatepath = true;
         }
 
         if (reclaculatepath == true)
@@ -37,22 +41,22 @@ public class iamryan : MonoBehaviour
             Path.movespeed = editwindow.movespeed;
             Path.movement();
         }
+
     }
 
     public void recalculate()
     {
-        Path.startphysical = source;
-        Path.finishphysical = destination;
-
+        Path.recalctimer = editwindow.recalcwhenidle;
+        Path.startphysical = editwindow.source;
+        Path.finishphysical = editwindow.destination;
         Path.stopnextto = editwindow.stopnextto;
         Path.recalculateEachStep = editwindow.recalc;
         Path.BBbounds = editwindow.testbounds;
         Path.BBbounds.extents = new Vector3((Path.BBbounds.extents.x / 2.0f), (Path.BBbounds.extents.y / 2.0f), (Path.BBbounds.extents.z / 2.0f));
-        Path.detail = deets;
+        Path.detail = editwindow.deets;
+
         reclaculatepath = false;
-
         Path.CalculatePath();
-
     }
 
 

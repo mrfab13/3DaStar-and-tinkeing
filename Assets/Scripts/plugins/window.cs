@@ -13,7 +13,10 @@ public class window : EditorWindow
     public Bounds testbounds;
     public bool stopnextto = true;
     public bool recalc = false;
-
+    public float recalcwhenidle = 1.5f;
+    public GameObject source;
+    public GameObject destination;
+    public float deets = 2.0f;
 
     [MenuItem("Window/PathFinding")]
     static void init()
@@ -37,10 +40,20 @@ public class window : EditorWindow
 
         movespeed = EditorGUILayout.FloatField("movespeed", movespeed);
 
+        GUILayout.Label("how long between recalculates when source has already reached destination (set to 0 to disable)", EditorStyles.helpBox);
+        recalcwhenidle = EditorGUILayout.FloatField("recalc timer", recalcwhenidle);
 
-        groupEnabled = EditorGUILayout.BeginToggleGroup("optinL settigns", groupEnabled);
-        testbool = EditorGUILayout.Toggle("toggler", testbool);
-        EditorGUILayout.EndToggleGroup();
+        source = (GameObject)EditorGUILayout.ObjectField("source object", source, typeof(GameObject), true);
+        destination = (GameObject)EditorGUILayout.ObjectField("destination object", destination, typeof(GameObject), true);
+
+        GUILayout.Label("how large the nodes are so bigger is less detailed, massive computational effect", EditorStyles.helpBox);
+        deets = EditorGUILayout.FloatField("deets", deets);
+
+
+
+        //groupEnabled = EditorGUILayout.BeginToggleGroup("optinL settigns", groupEnabled);
+        //testbool = EditorGUILayout.Toggle("toggler", testbool);
+        //EditorGUILayout.EndToggleGroup();
     }
 
 }
