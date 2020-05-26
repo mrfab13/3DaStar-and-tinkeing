@@ -6,23 +6,63 @@ using UnityEditor;
 
 public class iamryan : MonoBehaviour
 {
+    [HideInInspector]
     public bool reclaculatepath = false;
+    [HideInInspector]
     public bool movment = false;
+    [HideInInspector]
     public bool movfinished = false;
-    private window editwindow;
+    private bool movfin1call = false;
+    private bool movfinishedonce = false;
+
+    [HideInInspector]
+    public window editwindow;
+
+    [HideInInspector]
+    public GameObject destination;
+    [HideInInspector]
     public GameObject returnto;
+    [HideInInspector]
+    public IEnumerator whenFin;
+
+    void Awake()
+    {
+        editwindow = (window)EditorWindow.GetWindow(typeof(window));
+    }
 
     void Update()
     {
-        if (editwindow == null)
-        {
-            editwindow = (window)EditorWindow.GetWindow(typeof(window));
-        }
-
         movfinished = Path.endofmovereached;
+
         if (movfinished == true)
         {
-            editwindow.destination = returnto;
+            //while stopped
+
+            movfin1call = false;
+
+            if (movfinishedonce == true)
+            {
+                movfinishedonce = false;
+                movfin1call = true;
+            }
+        }
+        else
+        {
+            if (movfinishedonce == false)
+            {
+                movfinishedonce = true;
+                movfin1call = false;
+            }
+        }
+
+        //once when finished
+        if (movfin1call == true)
+        {
+            movfin1call = false;
+            if (whenFin != null)
+            {
+                StartCoroutine(whenFin);
+            }
         }
 
 
@@ -38,6 +78,8 @@ public class iamryan : MonoBehaviour
 
         if (movment == true)
         {
+            Path.smoothDisable = !editwindow.groupEnabled;
+            Path.directionmovespeed = editwindow.rateofAnglechange;
             Path.movespeed = editwindow.movespeed;
             Path.movement();
         }

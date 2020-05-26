@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.Text.RegularExpressions;
-
 public class window : EditorWindow
 {
     public string stign = "im a text box for fun :D";
-    public bool groupEnabled;
-    public bool testbool = true;
+    public bool groupEnabled = true;
     public float movespeed = 1.5f;
     public Bounds testbounds;
     public bool stopnextto = true;
@@ -17,6 +15,9 @@ public class window : EditorWindow
     public GameObject source;
     public GameObject destination;
     public float deets = 2.0f;
+
+    public float rateofAnglechange = 2.0f;
+    
 
     [MenuItem("Window/PathFinding")]
     static void init()
@@ -51,9 +52,13 @@ public class window : EditorWindow
 
 
 
-        //groupEnabled = EditorGUILayout.BeginToggleGroup("optinL settigns", groupEnabled);
-        //testbool = EditorGUILayout.Toggle("toggler", testbool);
-        //EditorGUILayout.EndToggleGroup();
+        groupEnabled = EditorGUILayout.BeginToggleGroup("smooth movment", groupEnabled);
+
+        GUILayout.Label("if too small it may get stuck as it cant turn sharp enough to reach the next node", EditorStyles.helpBox);
+        rateofAnglechange = EditorGUILayout.FloatField("rateofAnglechange", rateofAnglechange);
+
+
+        EditorGUILayout.EndToggleGroup();
     }
 
 }
