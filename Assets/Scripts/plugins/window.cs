@@ -5,8 +5,11 @@ using UnityEditor;
 using System.Text.RegularExpressions;
 public class window : EditorWindow
 {
+    //variables
     public string stign = "im a text box for fun :D";
     public bool groupEnabled = true;
+    public bool groupEnabled2 = true;
+
     public float movespeed = 1.5f;
     public Bounds testbounds;
     public bool stopnextto = true;
@@ -15,17 +18,23 @@ public class window : EditorWindow
     public GameObject source;
     public GameObject destination;
     public float deets = 2.0f;
-
     public float rateofAnglechange = 2.0f;
-    
+    public float dynamicedgesize = 3.0f;
 
+
+
+    //window inilisation
     [MenuItem("Window/PathFinding")]
+
+
+
     static void init()
     {
         window tmp = (window)EditorWindow.GetWindow(typeof(window));
         tmp.Show();
     }
 
+    //all elements in the window, the elemets apply to variables that can be set or read from other code 
     void OnGUI()
     {
         GUILayout.Label("base settings", EditorStyles.boldLabel);
@@ -51,14 +60,14 @@ public class window : EditorWindow
         deets = EditorGUILayout.FloatField("deets", deets);
 
 
-
         groupEnabled = EditorGUILayout.BeginToggleGroup("smooth movment", groupEnabled);
-
         GUILayout.Label("if too small it may get stuck as it cant turn sharp enough to reach the next node", EditorStyles.helpBox);
         rateofAnglechange = EditorGUILayout.FloatField("rateofAnglechange", rateofAnglechange);
+        EditorGUILayout.EndToggleGroup();
 
-
+        GUILayout.Label("enabling this group will ignor the box bounds", EditorStyles.helpBox);
+        groupEnabled2 = EditorGUILayout.BeginToggleGroup("dynamic bounds box", groupEnabled2);
+        dynamicedgesize = EditorGUILayout.FloatField("edge buffer", dynamicedgesize);
         EditorGUILayout.EndToggleGroup();
     }
-
 }
