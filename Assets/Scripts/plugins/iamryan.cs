@@ -34,8 +34,6 @@ public class iamryan : MonoBehaviour
 
     saveFile save;
 
-
-
 #if UNITY_EDITOR
     //awake for self initlisation, start initlisation is done by the user in their own script
     void Awake()
@@ -47,11 +45,13 @@ public class iamryan : MonoBehaviour
 
     void Start()
     {
+
         save = this.GetComponent<saveFile>();
 #if UNITY_EDITOR
 
         savedll();
 #endif
+        Path.themask = ~(1 <<save.safeItem("themask", saveFile.types.INT).toint);
 
     }
 
@@ -213,6 +213,7 @@ public class iamryan : MonoBehaviour
         save.saveitem("deets", editwindow.deets);
         save.saveitem("rateofAnglechange", editwindow.rateofAnglechange);
         save.saveitem("dynamicedgesize", editwindow.dynamicedgesize);
+        save.saveitem("themask", editwindow.theMask.value);
     }
 
 #endif

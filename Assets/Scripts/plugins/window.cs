@@ -23,6 +23,7 @@ public class window : EditorWindow
     public float rateofAnglechange = 2.0f;
     public float dynamicedgesize = 3.0f;
 
+    public LayerMask theMask;
     //window inilisation
     [MenuItem("Window/PathFinding")]
 
@@ -60,6 +61,9 @@ public class window : EditorWindow
         groupEnabled2 = EditorGUILayout.BeginToggleGroup("dynamic bounds box", groupEnabled2);
         dynamicedgesize = EditorGUILayout.FloatField("edge buffer", dynamicedgesize);
         EditorGUILayout.EndToggleGroup();
+
+        GUILayout.Label("set this layermask to somthing if you want it to be ignored when finding a path if it have a collider on it. some examples could be if the source had a collider or a wall that it can walk through, they ;ayermask will need to be but on thoes gameobjects", EditorStyles.helpBox);
+        theMask = EditorGUILayout.LayerField("the mask", theMask);
 
     }
 

@@ -12,6 +12,8 @@ public class plugindemo : MonoBehaviour
     public List<GameObject> destinaitons;
     public int currdestination;
 
+    //I reject my humainty jojo
+    public LayerMask layerMask;
 
     void Start()
     {
@@ -20,6 +22,7 @@ public class plugindemo : MonoBehaviour
         iar = this.gameObject.GetComponent<iamryan>();
         iar.whenFin = whenfinished();
         iar.movfin1call = true;
+
 
     }
 
