@@ -12,9 +12,6 @@ public class plugindemo : MonoBehaviour
     public List<GameObject> destinaitons;
     public int currdestination;
 
-    //I reject my humainty jojo
-    public LayerMask layerMask;
-
     void Start()
     {
         //set refrences and initlise
@@ -22,8 +19,6 @@ public class plugindemo : MonoBehaviour
         iar = this.gameObject.GetComponent<iamryan>();
         iar.whenFin = whenfinished();
         iar.movfin1call = true;
-
-
     }
 
 
@@ -47,7 +42,7 @@ public class plugindemo : MonoBehaviour
         iar.destination = destinaitons[currdestination];
         iar.whenFin = whenfinished();
 
-        iar.reclaculatepath = true;
+        iar.recalculate();
         iar.movment = true;
 
 

@@ -83,7 +83,7 @@ public class saveFile : MonoBehaviour
             righter = new StreamWriter(saveFilePath, true);
             righter.WriteLine(input1);
             righter.Close();
-            Debug.Log("created");
+            //Debug.Log("created");
         }
         else
         {
@@ -109,11 +109,11 @@ public class saveFile : MonoBehaviour
 
                 righter.Close();
 
-                Debug.Log("overwritten");
+                //Debug.Log("overwritten");
             }
             else
             {
-                Debug.Log("already exists");
+                //Debug.Log("already exists");
             }
         }
     }
@@ -126,14 +126,14 @@ public class saveFile : MonoBehaviour
         {
             if (test.toint == -999999)
             {
-                Debug.LogError("Failed to save >" + name +  "< of type " + type);
+                //Debug.LogError("Failed to save >" + name +  "< of type " + type);
             }
         }
         else if (type == types.FLOAT)
         {
             if (test.tofloat == -999999f)
             {
-                Debug.LogError("Failed to save >" + name + "< of type " + type);
+                //Debug.LogError("Failed to save >" + name + "< of type " + type);
             }
         }
 
@@ -208,7 +208,7 @@ public class saveFile : MonoBehaviour
 
         path = path.Substring(0, cutpos + 1);
 
-        Debug.Log(path);
+        //Debug.Log(path);
 
         File.Copy(saveFilePath, path + saveFilePath);
     }

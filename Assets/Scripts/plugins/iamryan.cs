@@ -4,11 +4,12 @@ using UnityEngine;
 using pathfind;
 using UnityEditor;
 
+[RequireComponent(typeof(saveFile))]
+
 public class iamryan : MonoBehaviour
 {
     //variables 
-    [HideInInspector]
-    public bool reclaculatepath = false;
+    private bool reclaculatepath = false;
     [HideInInspector]
     public bool movment = false;
     [HideInInspector]
@@ -32,7 +33,7 @@ public class iamryan : MonoBehaviour
     public GameObject source;
     public GameObject destination;
 
-    saveFile save;
+    private saveFile save;
 
 #if UNITY_EDITOR
     //awake for self initlisation, start initlisation is done by the user in their own script
@@ -51,7 +52,7 @@ public class iamryan : MonoBehaviour
 
         savedll();
 #endif
-        Path.themask = ~(1 <<save.safeItem("themask", saveFile.types.INT).toint);
+        Path.themask = ~(1 << save.safeItem("themask", saveFile.types.INT).toint);
 
     }
 
@@ -111,20 +112,33 @@ public class iamryan : MonoBehaviour
 
         if (reclaculatepath == true)
         {
-
             reclaculatepath = false;
-            recalculate();
+
+            if ((source != null) && (destination != null))
+            {
+                recalculate();
+            }
+            else
+            {
+                Debug.Log("source or destination missing");
+            }
         }
 
         //if the source should be moving 
         if (movment == true)
         {
-            Path.smoothDisable = !System.Convert.ToBoolean(save.safeItem("groupEnabled", saveFile.types.STRING).tostring);
-            Path.directionmovespeed = save.safeItem("rateofAnglechange", saveFile.types.FLOAT).tofloat;
-            Path.movespeed = save.safeItem("movespeed", saveFile.types.FLOAT).tofloat;
-            Path.movement();
+            if ((source != null) && (destination != null))
+            {
+                Path.smoothDisable = !System.Convert.ToBoolean(save.safeItem("groupEnabled", saveFile.types.STRING).tostring);
+                Path.directionmovespeed = save.safeItem("rateofAnglechange", saveFile.types.FLOAT).tofloat;
+                Path.movespeed = save.safeItem("movespeed", saveFile.types.FLOAT).tofloat;
+                Path.movement();
+            }
+            else
+            {
+                Debug.Log("source or destination missing");
+            }
         }
-
     }
 
     //initilise all of the things to be used from the window, despite being called recalculate it is also used for the initial calculation aswell

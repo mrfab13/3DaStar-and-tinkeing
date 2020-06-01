@@ -13,15 +13,15 @@ public class window : EditorWindow
     public bool groupEnabled = true;
     public bool groupEnabled2 = true;
 
-    public float movespeed = 1.5f;
-    public Bounds testbounds;
-    public bool stopnextto = true;
-    public bool recalc = false;
-    public float recalcwhenidle = 1.5f;
+    public float movespeed = 3.0f;
+    public Bounds testbounds = new Bounds(new Vector3(0.0f, 20.0f, 0.0f), new Vector3(80.0f, 20.0f, 80.0f));
+    public bool stopnextto = false;
+    public bool recalc = true;
+    public float recalcwhenidle = 2.0f;
 
     public float deets = 2.0f;
-    public float rateofAnglechange = 2.0f;
-    public float dynamicedgesize = 3.0f;
+    public float rateofAnglechange = 3.0f;
+    public float dynamicedgesize = 10.0f;
 
     public LayerMask theMask;
     //window inilisation
@@ -62,7 +62,7 @@ public class window : EditorWindow
         dynamicedgesize = EditorGUILayout.FloatField("edge buffer", dynamicedgesize);
         EditorGUILayout.EndToggleGroup();
 
-        GUILayout.Label("set this layermask to somthing if you want it to be ignored when finding a path if it have a collider on it. some examples could be if the source had a collider or a wall that it can walk through, they ;ayermask will need to be but on thoes gameobjects", EditorStyles.helpBox);
+        GUILayout.Label("set this layermask to somthing if you want it to be ignored when finding a path if it have a collider on it. some examples could be if the source had a collider or a wall that it can walk through, they layermask will need to be but on thoes gameobjects", EditorStyles.helpBox);
         theMask = EditorGUILayout.LayerField("the mask", theMask);
 
     }
