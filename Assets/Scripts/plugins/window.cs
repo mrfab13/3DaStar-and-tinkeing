@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.Text.RegularExpressions;
+
+#if UNITY_EDITOR
+
 public class window : EditorWindow
 {
     //variables
@@ -15,28 +18,19 @@ public class window : EditorWindow
     public bool stopnextto = true;
     public bool recalc = false;
     public float recalcwhenidle = 1.5f;
-    public GameObject source;
-    public GameObject destination;
+
     public float deets = 2.0f;
     public float rateofAnglechange = 2.0f;
     public float dynamicedgesize = 3.0f;
-
-
 
     //window inilisation
     [MenuItem("Window/PathFinding")]
 
 
-
-    static void init()
-    {
-        window tmp = (window)EditorWindow.GetWindow(typeof(window));
-        tmp.Show();
-    }
-
     //all elements in the window, the elemets apply to variables that can be set or read from other code 
     void OnGUI()
     {
+
         GUILayout.Label("base settings", EditorStyles.boldLabel);
         stign = EditorGUILayout.TextField("text fild", stign);
 
@@ -53,9 +47,6 @@ public class window : EditorWindow
         GUILayout.Label("how long between recalculates when source has already reached destination (set to 0 to disable)", EditorStyles.helpBox);
         recalcwhenidle = EditorGUILayout.FloatField("recalc timer", recalcwhenidle);
 
-        source = (GameObject)EditorGUILayout.ObjectField("source object", source, typeof(GameObject), true);
-        destination = (GameObject)EditorGUILayout.ObjectField("destination object", destination, typeof(GameObject), true);
-
         GUILayout.Label("how large the nodes are so bigger is less detailed, massive computational effect", EditorStyles.helpBox);
         deets = EditorGUILayout.FloatField("deets", deets);
 
@@ -69,5 +60,10 @@ public class window : EditorWindow
         groupEnabled2 = EditorGUILayout.BeginToggleGroup("dynamic bounds box", groupEnabled2);
         dynamicedgesize = EditorGUILayout.FloatField("edge buffer", dynamicedgesize);
         EditorGUILayout.EndToggleGroup();
+
     }
+
+
+
 }
+#endif

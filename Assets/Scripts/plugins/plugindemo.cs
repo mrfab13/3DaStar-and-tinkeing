@@ -6,7 +6,6 @@ using pathfind;
 public class plugindemo : MonoBehaviour
 {
     //refrences
-    private window editwindow;
     private iamryan iar;
 
     //destinations
@@ -19,18 +18,15 @@ public class plugindemo : MonoBehaviour
         //set refrences and initlise
         currdestination = 0;
         iar = this.gameObject.GetComponent<iamryan>();
-        editwindow = iar.editwindow;
         iar.whenFin = whenfinished();
+        iar.movfin1call = true;
 
-        StartCoroutine(whenfinished());
     }
 
 
     //custom ienum that gets called from other script when the source reaches the destination
     public IEnumerator whenfinished()
     {
-        Debug.Log("hi");
-
         //allows the script to reinitlise the direction the drone was traveling in 
         Path.currenttdirinit = true;
 
@@ -45,10 +41,10 @@ public class plugindemo : MonoBehaviour
         }
 
         //update and move again
-        editwindow.destination = destinaitons[currdestination];
+        iar.destination = destinaitons[currdestination];
         iar.whenFin = whenfinished();
 
-        iar.recalculate();
+        iar.reclaculatepath = true;
         iar.movment = true;
 
 

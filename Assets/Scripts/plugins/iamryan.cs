@@ -13,32 +13,65 @@ public class iamryan : MonoBehaviour
     public bool movment = false;
     [HideInInspector]
     public bool movfinished = false;
-    private bool movfin1call = false;
-    private bool movfinishedonce = false;
+    [HideInInspector]
+    public bool movfin1call = false;
+    private bool movfinishedonce = true;
 
+#if UNITY_EDITOR
     [HideInInspector]
     public window editwindow;
 
-    [HideInInspector]
-    public GameObject destination;
-    [HideInInspector]
-    public GameObject returnto;
+    public bool saveWindow = false;
+
+#endif
+
+
     [HideInInspector]
     public IEnumerator whenFin;
 
+    public GameObject source;
+    public GameObject destination;
+
+    saveFile save;
+
+
+
+#if UNITY_EDITOR
     //awake for self initlisation, start initlisation is done by the user in their own script
     void Awake()
     {
         editwindow = (window)EditorWindow.GetWindow(typeof(window));
     }
+#endif
+
+
+    void Start()
+    {
+        save = this.GetComponent<saveFile>();
+#if UNITY_EDITOR
+
+        savedll();
+#endif
+
+    }
 
     void Update()
     {
+
+#if UNITY_EDITOR
+        if (saveWindow == true)
+        {
+            savedll();
+            saveWindow = false;
+        }
+#endif
+
         //source finished moving
         movfinished = Path.endofmovereached;
 
         if (movfinished == true)
         {
+
             //movfin1call is false except for the first instance of movfinished == true
 
             movfin1call = false;
@@ -60,6 +93,8 @@ public class iamryan : MonoBehaviour
             }
         }
 
+
+
         //true one time when finished
         if (movfin1call == true)
         {
@@ -76,17 +111,17 @@ public class iamryan : MonoBehaviour
 
         if (reclaculatepath == true)
         {
+
             reclaculatepath = false;
             recalculate();
         }
 
-
         //if the source should be moving 
         if (movment == true)
         {
-            Path.smoothDisable = !editwindow.groupEnabled;
-            Path.directionmovespeed = editwindow.rateofAnglechange;
-            Path.movespeed = editwindow.movespeed;
+            Path.smoothDisable = !System.Convert.ToBoolean(save.safeItem("groupEnabled", saveFile.types.STRING).tostring);
+            Path.directionmovespeed = save.safeItem("rateofAnglechange", saveFile.types.FLOAT).tofloat;
+            Path.movespeed = save.safeItem("movespeed", saveFile.types.FLOAT).tofloat;
             Path.movement();
         }
 
@@ -95,35 +130,41 @@ public class iamryan : MonoBehaviour
     //initilise all of the things to be used from the window, despite being called recalculate it is also used for the initial calculation aswell
     public void recalculate()
     {
-        Path.recalctimer = editwindow.recalcwhenidle;
-        Path.startphysical = editwindow.source;
-        Path.finishphysical = editwindow.destination;
-        Path.stopnextto = editwindow.stopnextto;
-        Path.recalculateEachStep = editwindow.recalc;
+        Path.recalctimer = save.safeItem("recalcwhenidle", saveFile.types.FLOAT).tofloat;
+        Path.startphysical = source;
+        Path.finishphysical = destination;
 
-        if (editwindow.groupEnabled2 == false) //static bounds
+        Path.stopnextto = System.Convert.ToBoolean(save.safeItem("stopnextto", saveFile.types.STRING).tostring);
+        Path.recalculateEachStep = System.Convert.ToBoolean(save.safeItem("recalc", saveFile.types.STRING).tostring);
+
+        if (System.Convert.ToBoolean(save.safeItem("groupEnabled2", saveFile.types.STRING).tostring) == false) //static bounds
         {
-            Vector3 middlepos = editwindow.testbounds.center;
-            Vector3 extents = editwindow.testbounds.extents;
-
-            Path.BBbounds = new Bounds(middlepos, extents);
+            Path.BBbounds = getbounds();
         }
         else // dyanmic bounds
         {
-            Vector3 middlepos = ((editwindow.source.transform.position + editwindow.destination.transform.position) / 2.0f);
-            Vector3 extents = (editwindow.destination.transform.position - editwindow.source.transform.position);
-            extents = new Vector3(Mathf.Abs(extents.x) + editwindow.dynamicedgesize, Mathf.Abs(extents.y) + editwindow.dynamicedgesize, Mathf.Abs(extents.z) + editwindow.dynamicedgesize);
+            Vector3 middlepos = ((source.transform.position + destination.transform.position) / 2.0f);
+            Vector3 extents = (destination.transform.position - source.transform.position);
+            float edgesize = save.safeItem("dynamicedgesize", saveFile.types.FLOAT).tofloat;
+            extents = new Vector3(Mathf.Abs(extents.x) + edgesize, Mathf.Abs(extents.y) + edgesize, Mathf.Abs(extents.z) + edgesize);
             Path.BBbounds = new Bounds(middlepos, extents);
+
+#if UNITY_EDITOR
 
             editwindow.testbounds = Path.BBbounds;
             editwindow.testbounds.extents *= 2.0f;
+#endif
+
         }
 
-        Path.detail = editwindow.deets;
+        Path.detail = save.safeItem("deets", saveFile.types.FLOAT).tofloat;
 
         Path.CalculatePath();
     }
 
+
+
+#if UNITY_EDITOR
 
     //draws gizmoes when in editor mode
     void OnDrawGizmos()
@@ -152,4 +193,43 @@ public class iamryan : MonoBehaviour
             Gizmos.DrawCube(Path.pathlist[i].returnpos(), new Vector3((Path.detail / 4.0f), (Path.detail / 4.0f), (Path.detail / 4.0f)));
         }
     }
+
+
+    public void savedll()
+    {
+        save.saveitem("stign", editwindow.stign);
+        save.saveitem("groupEnabled", editwindow.groupEnabled.ToString());
+        save.saveitem("groupEnabled2", editwindow.groupEnabled2.ToString());
+        save.saveitem("movespeed", editwindow.movespeed);
+        save.saveitem("testbounds.center.x", editwindow.testbounds.center.x);
+        save.saveitem("testbounds.center.y", editwindow.testbounds.center.y);
+        save.saveitem("testbounds.center.z", editwindow.testbounds.center.z);
+        save.saveitem("testbounds.size.x", editwindow.testbounds.size.x);
+        save.saveitem("testbounds.size.y", editwindow.testbounds.size.y);
+        save.saveitem("testbounds.size.z", editwindow.testbounds.size.z);
+        save.saveitem("stopnextto", editwindow.stopnextto.ToString());
+        save.saveitem("recalc", editwindow.recalc.ToString());
+        save.saveitem("recalcwhenidle", editwindow.recalcwhenidle);
+        save.saveitem("deets", editwindow.deets);
+        save.saveitem("rateofAnglechange", editwindow.rateofAnglechange);
+        save.saveitem("dynamicedgesize", editwindow.dynamicedgesize);
+    }
+
+#endif
+
+    public Bounds getbounds()
+    {
+        float cx = save.safeItem("testbounds.center.x", saveFile.types.FLOAT).tofloat;
+        float cy = save.safeItem("testbounds.center.y", saveFile.types.FLOAT).tofloat;
+        float cz = save.safeItem("testbounds.center.z", saveFile.types.FLOAT).tofloat;
+        float sx = save.safeItem("testbounds.size.x", saveFile.types.FLOAT).tofloat / 2.0f;
+        float sy = save.safeItem("testbounds.size.y", saveFile.types.FLOAT).tofloat / 2.0f;
+        float sz = save.safeItem("testbounds.size.z", saveFile.types.FLOAT).tofloat / 2.0f;
+
+        Bounds thebounds = new Bounds(new Vector3(cx, cy, cz), new Vector3(sx, sy, sz));
+
+        return (thebounds);
+    }
+
+
 }
