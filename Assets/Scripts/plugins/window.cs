@@ -1,7 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+
 using UnityEditor;
+using UnityEditorInternal;
+
+#endif
+
 using System.Text.RegularExpressions;
 
 #if UNITY_EDITOR
@@ -63,7 +69,10 @@ public class window : EditorWindow
         EditorGUILayout.EndToggleGroup();
 
         GUILayout.Label("set this layermask to somthing if you want it to be ignored when finding a path if it have a collider on it. some examples could be if the source had a collider or a wall that it can walk through, they layermask will need to be but on thoes gameobjects", EditorStyles.helpBox);
-        theMask = EditorGUILayout.LayerField("the mask", theMask);
+        //theMask = EditorGUILayout.LayerField("the mask", theMask);
+
+        LayerMask tempMask = EditorGUILayout.MaskField(InternalEditorUtility.LayerMaskToConcatenatedLayersMask(theMask), InternalEditorUtility.layers);
+        theMask = InternalEditorUtility.ConcatenatedLayersMaskToLayerMask(tempMask);
 
     }
 

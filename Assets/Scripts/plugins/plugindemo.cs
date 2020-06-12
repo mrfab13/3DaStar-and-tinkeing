@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using pathfind;
+using UnityEngine.UI;
 
 public class plugindemo : MonoBehaviour
 {
@@ -11,15 +12,40 @@ public class plugindemo : MonoBehaviour
     //destinations
     public List<GameObject> destinaitons;
     public int currdestination;
+    private GameObject rei;
 
+    public bool candeliver = false;
     void Start()
     {
         //set refrences and initlise
-        currdestination = 0;
         iar = this.gameObject.GetComponent<iamryan>();
         iar.whenFin = whenfinished();
+        rei = GameObject.Find("destination");
+        deliver();
+    }
+
+
+    void Update()
+    {
+        if (candeliver == true)
+        {
+            deliver();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
+
+    public void deliver()
+    {
+        currdestination = 0;
+        candeliver = false;
+        iar.destination = destinaitons[currdestination];
         iar.movfin1call = true;
     }
+
 
 
     //custom ienum that gets called from other script when the source reaches the destination
@@ -28,23 +54,26 @@ public class plugindemo : MonoBehaviour
         //allows the script to reinitlise the direction the drone was traveling in 
         Path.currenttdirinit = true;
 
-        //alternates between 2 destinations
         if (currdestination == 0)
         {
-            currdestination = 1;
+            if (destinaitons[currdestination] == rei)
+            {
+
+                currdestination = 1;
+
+                iar.recalculate();
+                iar.movment = true;
+            }
         }
-        else if (currdestination == 1)
+        else
         {
-            currdestination = 0;
+            candeliver = true;
+
         }
 
         //update and move again
         iar.destination = destinaitons[currdestination];
         iar.whenFin = whenfinished();
-
-        iar.recalculate();
-        iar.movment = true;
-
 
         yield return null;
     }
